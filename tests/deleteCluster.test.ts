@@ -1,8 +1,20 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-// const AWS = require('aws-sdk');
-// import { trpc } from '../src/trpc/trpc-provider';
+import AWS from 'aws-sdk';
+import { trpc } from '../src/trpc/trpc-provider';
+import { deleteCluster } from '../src/server/service/checkClusterStatus.ts';
 // const deleteCluster = trpc.createCluster.deleteCluster.useMutation();
 
+describe("deleteCluster", () => {
+  it("should sucessfully return successful cluster deletion status", () => {
+    const id = '60d5f60f8f8d8b7b0c2b7b81';
+    const response = deleteCluster(id);
+    expect(response).toEqual({ status: 'Deleting' });
+  });
+  it('should throw an error for an invalid cluster ID', () => {
+    const invalidId = '69d5f60f8f8d8b7f0c2b3b88';
+    expect(() => deleteCluster(invalidId)).toThrow(`Cannot find cluster with ID: ${invalidId}`);
+  });
+});
 
 // jest.mock('aws-sdk', () => {
 //   const mskMock = {
