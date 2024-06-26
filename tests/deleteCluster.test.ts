@@ -16,29 +16,29 @@ jest.mock('aws-sdk', () => {
 
 describe('deleteCluster', () => {
   it('should start the cluster deletion', async () => {
-    const clusterArn = 'arn:aws:kafka:region:account-id:cluster/cluster-name/cluster-id';
+    const clusterId = "1";
     const deleteClusterMock = (Kafka as jest.MockedClass<typeof Kafka>).prototype.deleteCluster;
     const promiseMock = deleteClusterMock().promise as jest.Mock<Promise<void>>;
 
     promiseMock.mockResolvedValue(undefined);
 
-    await expect(deleteCluster(clusterArn)).resolves.toBeUndefined();
+    await expect(deleteCluster({ id: clusterId })).resolves.toBeUndefined();
 
-    expect(deleteClusterMock).toHaveBeenCalledWith({ ClusterArn: clusterArn });
+    expect(deleteClusterMock).toHaveBeenCalledWith({ id: clusterId });
     expect(promiseMock).toHaveBeenCalled();
   });
 
   it('should throw an error when cluster is invalid', async () => {
-    const clusterArn = 'arn:aws:kafka:region:account-id:cluster/cluster-name/cluster-id';
+    const clusterId = "1";
     const deleteClusterMock = (Kafka as jest.MockedClass<typeof Kafka>).prototype.deleteCluster;
     const promiseMock = deleteClusterMock().promise as jest.Mock<Promise<void>>;
 
     const error = new Error('Cluster not found');
     promiseMock.mockRejectedValue(error);
 
-    await expect(deleteCluster(clusterArn)).rejects.toThrow('Cluster not found');
+    await expect(deleteCluster({ id: clusterId })).rejects.toThrow('Cluster not found');
 
-    expect(deleteClusterMock).toHaveBeenCalledWith({ ClusterArn: clusterArn });
+    expect(deleteClusterMock).toHaveBeenCalledWith({ id: clusterId });
     expect(promiseMock).toHaveBeenCalled();
   });
 });
