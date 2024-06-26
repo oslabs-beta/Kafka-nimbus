@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import AWS from 'aws-sdk';
 import { trpc } from '../src/trpc/trpc-provider';
-import { deleteCluster } from '../src/server/service/checkClusterStatus.ts';
+import { deleteCluster } from '../src/server/service/checkClusterStatus';
 // const deleteCluster = trpc.createCluster.deleteCluster.useMutation();
 
 describe("deleteCluster", () => {
